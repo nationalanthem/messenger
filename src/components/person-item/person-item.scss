@@ -1,0 +1,45 @@
+@import '../../styles/constants';
+
+.person-item {
+  display: flex;
+  align-items: center;
+  background-color: $darkest;
+  padding: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $darker;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    margin-right: 15px;
+    background-color: white;
+    border-radius: 50%;
+  }
+
+  &__main {
+    width: 100%;
+
+    &__username {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    &__message {
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      color: $text-muted;
+      &__content {
+        margin: 0;
+      }
+      &__timestamp {
+        margin: 0;
+      }
+    }
+  }
+}
