@@ -1,0 +1,12 @@
+@import '../../styles/auth.page';
+@import '../../styles/constants';
+
+.register-error {
+  position: absolute;
+  background-color: $darkest;
+  color: $secondary;
+  padding: 15px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
