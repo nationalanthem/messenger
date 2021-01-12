@@ -4,7 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import './register.page.scss'
 import { auth } from '../../api/auth.api'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setMessage } from '../../redux/re-ducks/message/actions'
 
 interface RegisterFormInputs {
   username: string
@@ -38,6 +40,7 @@ const registerSchema = yup.object().shape({
 const RegisterPage = () => {
   const [registerError, setRegisterError] = useState<string>()
 
+  const dispatch = useDispatch()
   const history = useHistory()
 
   const { register, handleSubmit, errors, setError } = useForm<RegisterFormInputs>({
@@ -55,6 +58,7 @@ const RegisterPage = () => {
     try {
       await auth.register(data.username, data.password)
       localStorage.setItem('username', data.username)
+      dispatch(setMessage({ text: 'Вы успешно зарегистрировались!', kind: 'success' }))
       history.push('/login')
     } catch (error) {
       setRegisterError(error.response.data.message)
@@ -108,6 +112,12 @@ const RegisterPage = () => {
           Зарегистрироваться
         </button>
       </form>
+      <div className="already-exist">
+        Уже есть аккаунт?{' '}
+        <Link to="/login" className="link">
+          Войдите
+        </Link>
+      </div>
     </>
   )
 }

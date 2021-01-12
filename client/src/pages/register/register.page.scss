@@ -3,10 +3,31 @@
 
 .register-error {
   position: absolute;
-  background-color: $darkest;
-  color: $secondary;
-  padding: 15px;
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
+  padding: 15px;
+  background-color: $darkest;
+  color: $secondary;
+}
+
+.error-message {
+  color: $secondary;
+  margin: 0;
+}
+
+.already-exist {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px;
+  background-color: $darkest;
+  & .link {
+    text-decoration: none;
+    color: $primary;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }

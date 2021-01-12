@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { useHistory, Link } from 'react-router-dom'
 import { auth } from '../../api/auth.api'
+import { setAuthStatus } from '../../redux/re-ducks/auth/actions'
+import { setMessage } from '../../redux/re-ducks/message/actions'
 import './login.page.scss'
 
 interface LoginFormInputs {
@@ -11,6 +15,9 @@ interface LoginFormInputs {
 const LoginPage = () => {
   const [loginError, setLoginError] = useState<string>()
 
+  const dispatch = useDispatch()
+  const history = useHistory()
+
   const { register, handleSubmit } = useForm<LoginFormInputs>()
 
   const onSubmit = handleSubmit(async (data) => {
@@ -20,7 +27,9 @@ const LoginPage = () => {
       const response = await auth.login(data.username, data.password)
       const { token } = response.data
       localStorage.setItem('token', token)
-      window.location.href = '/'
+      dispatch(setAuthStatus(true))
+      dispatch(setMessage({ text: 'Вы успешно авторизовались!', kind: 'success' }))
+      history.push('/')
     } catch (error) {
       setLoginError(error.response.data.message)
     }
@@ -60,6 +69,12 @@ const LoginPage = () => {
           Войти
         </button>
       </form>
+      <div className="not-exist">
+        Нет аккаунта?{' '}
+        <Link to="/register" className="link">
+          Зарегистрируйтесь
+        </Link>
+      </div>
     </>
   )
 }
