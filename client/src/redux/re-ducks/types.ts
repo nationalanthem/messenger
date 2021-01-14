@@ -1,5 +1,6 @@
 import { MessageActionTypes } from './message/actions'
 import { AuthActionTypes } from './auth/actions'
+import { UserActionTypes } from './user/actions'
 
 // message
 
@@ -31,3 +32,20 @@ export interface SetAuthStatus {
 export type AuthActions = SetAuthStatus
 
 export type AuthState = boolean
+
+// user
+
+export interface SetUser {
+  type: typeof UserActionTypes.SET_USER
+  payload: User
+}
+
+export type UserActions = SetUser
+
+export interface User {
+  id: number
+  username: string
+  avatar: string | null
+}
+
+export type UserState = User | null

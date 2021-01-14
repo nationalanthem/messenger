@@ -11,6 +11,7 @@ import { selectAuthStatus } from './redux/re-ducks/auth/selectors'
 import { selectMessage } from './redux/re-ducks/message/selectors'
 import { clearMessage } from './redux/re-ducks/message/actions'
 import { setAuthStatus } from './redux/re-ducks/auth/actions'
+import { fetchUser } from './redux/re-ducks/user/effects'
 
 import './app.scss'
 
@@ -19,6 +20,10 @@ const App = () => {
 
   const isAuth = useSelector(selectAuthStatus)
   const message = useSelector(selectMessage)
+
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [dispatch])
 
   useEffect(() => {
     const handleStorageChange = () => {
