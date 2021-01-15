@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory, Link } from 'react-router-dom'
 import { auth } from '../../api/auth.api'
 import { setAuthStatus } from '../../redux/re-ducks/auth/actions'
-import { setMessage } from '../../redux/re-ducks/message/actions'
+import { setNotice } from '../../redux/re-ducks/notice/actions'
 import './login.page.scss'
 
 interface LoginFormInputs {
@@ -28,7 +28,7 @@ const LoginPage = () => {
       const { token } = response.data
       localStorage.setItem('token', token)
       dispatch(setAuthStatus(true))
-      dispatch(setMessage({ text: 'Вы успешно авторизовались!', kind: 'success' }))
+      dispatch(setNotice({ text: 'Вы успешно авторизовались!', kind: 'success' }))
       history.push('/')
     } catch (error) {
       setLoginError(error.response.data.message)

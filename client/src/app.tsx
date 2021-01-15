@@ -8,10 +8,11 @@ import LoggedOutRoute from './logged-out-route'
 import toast, { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAuthStatus } from './redux/re-ducks/auth/selectors'
-import { selectMessage } from './redux/re-ducks/message/selectors'
-import { clearMessage } from './redux/re-ducks/message/actions'
+import { selectNotice } from './redux/re-ducks/notice/selectors'
+import { clearNotice } from './redux/re-ducks/notice/actions'
 import { setAuthStatus } from './redux/re-ducks/auth/actions'
 import { fetchUser } from './redux/re-ducks/user/effects'
+import { fetchMessages } from './redux/re-ducks/messages/effects'
 
 import './app.scss'
 
@@ -19,16 +20,19 @@ const App = () => {
   const dispatch = useDispatch()
 
   const isAuth = useSelector(selectAuthStatus)
-  const message = useSelector(selectMessage)
+  const message = useSelector(selectNotice)
 
   useEffect(() => {
-    dispatch(fetchUser())
-  }, [dispatch])
+    if (isAuth) {
+      dispatch(fetchUser())
+      dispatch(fetchMessages())
+    }
+  }, [isAuth, dispatch])
 
   useEffect(() => {
     const handleStorageChange = () => {
       dispatch(setAuthStatus(!!localStorage.getItem('token')))
-      dispatch(clearMessage())
+      dispatch(clearNotice())
     }
 
     window.addEventListener('storage', handleStorageChange)

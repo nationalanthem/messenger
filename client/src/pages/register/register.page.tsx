@@ -6,7 +6,7 @@ import './register.page.scss'
 import { auth } from '../../api/auth.api'
 import { useHistory, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { setMessage } from '../../redux/re-ducks/message/actions'
+import { setNotice } from '../../redux/re-ducks/notice/actions'
 
 interface RegisterFormInputs {
   username: string
@@ -58,7 +58,7 @@ const RegisterPage = () => {
     try {
       await auth.register(data.username, data.password)
       localStorage.setItem('username', data.username)
-      dispatch(setMessage({ text: 'Вы успешно зарегистрировались!', kind: 'success' }))
+      dispatch(setNotice({ text: 'Вы успешно зарегистрировались!', kind: 'success' }))
       history.push('/login')
     } catch (error) {
       setRegisterError(error.response.data.message)

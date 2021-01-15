@@ -1,26 +1,27 @@
-import { MessageActionTypes } from './message/actions'
+import { NoticeActionTypes } from './notice/actions'
 import { AuthActionTypes } from './auth/actions'
 import { UserActionTypes } from './user/actions'
+import { MessagesActionTypes } from './messages/actions'
 
-// message
+// notice
 
-export interface SetMessage {
-  type: MessageActionTypes.SET_MESSAGE
-  payload: Message
+export interface SetNotice {
+  type: NoticeActionTypes
+  payload: Notice
 }
 
-export interface ClearMessage {
-  type: MessageActionTypes.CLEAR_MESSAGE
+export interface ClearNotice {
+  type: NoticeActionTypes.CLEAR_NOTICE
 }
 
-export type MessageActions = SetMessage | ClearMessage
+export type NoticeActions = SetNotice | ClearNotice
 
-export interface Message {
+export interface Notice {
   text: string
   kind: 'success' | 'error' | 'info'
 }
 
-export type MessageState = Message | null
+export type NoticeState = Notice | null
 
 // auth
 
@@ -43,9 +44,28 @@ export interface SetUser {
 export type UserActions = SetUser
 
 export interface User {
-  id: number
+  id: string
   username: string
   avatar: string | null
 }
 
 export type UserState = User | null
+
+// messages
+
+export interface SetMessages {
+  type: typeof MessagesActionTypes.SET_MESSAGES
+  payload: Message[]
+}
+
+export type MessagesActions = SetMessages
+
+export interface Message {
+  user_id: string
+  username: string
+  avatar: string | null
+  message_id: string
+  text: string
+}
+
+export type MessagesState = Message[] | null

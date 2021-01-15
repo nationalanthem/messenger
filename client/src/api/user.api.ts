@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import axios from '../config/axios.config'
 
 interface GetMyUserdataResponse {
-  id: number
+  id: string
   username: string
   avatar: string | null
 }
