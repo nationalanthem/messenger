@@ -1,3 +1,5 @@
+@import '../../styles/constants';
+
 .dialog-window {
   display: flex;
   flex-direction: column;
@@ -5,4 +7,17 @@
   padding: 30px;
   width: 75vw;
   height: 100vh;
+}
+
+.idle-wrapper {
+  display: flex;
+  width: 75vw;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+  & h2 {
+    padding: 0 10vw;
+    color: $text-muted;
+  }
 }

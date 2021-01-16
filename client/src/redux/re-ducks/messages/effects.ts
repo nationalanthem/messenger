@@ -4,7 +4,7 @@ import { MessagesActions } from '../types'
 import { setMessages } from './actions'
 
 export const fetchMessages = () => (dispatch: Dispatch<MessagesActions>) => {
-  return messagesAPI.getAllMessages().then((response) => {
-    dispatch(setMessages(response.data.messages))
+  return messagesAPI.getLastMessageFromEachUser().then((response) => {
+    dispatch(setMessages(response.data))
   })
 }

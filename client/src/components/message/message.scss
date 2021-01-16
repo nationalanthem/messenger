@@ -6,14 +6,11 @@ $timestamp_margin: 66px;
   position: relative;
   display: flex;
   align-items: flex-end;
-  padding: 30px 15px;
+  padding: 30px 0;
 
   &--from {
     justify-content: flex-start;
-    & .message__avatar {
-      order: -1;
-      margin: 0 16px 0 0;
-    }
+
     & .message__timestamp {
       left: $timestamp_margin;
     }
@@ -25,9 +22,7 @@ $timestamp_margin: 66px;
 
   &--to {
     justify-content: flex-end;
-    & .message__avatar {
-      margin: 0 0 0 16px;
-    }
+
     & .message__timestamp {
       right: $timestamp_margin;
     }
@@ -40,14 +35,6 @@ $timestamp_margin: 66px;
     max-width: 40vw;
     padding: 20px;
     border-radius: 25px;
-  }
-
-  &__avatar {
-    background-color: white;
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
-    border-radius: 50%;
   }
 
   &__timestamp {

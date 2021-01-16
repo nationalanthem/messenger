@@ -3,14 +3,19 @@ const jwt = require('jsonwebtoken')
 
 const checkDuplicateUsername = async (req, res, next) => {
   const { username } = req.body
-  const { rows } = await db.query('SELECT * FROM users WHERE username = $1', [username])
 
-  if (rows.length) {
-    res.status(409).json({ message: 'Пользователь с таким именем уже существует' })
-    return
+  try {
+    const { rows } = await db.query('SELECT * FROM users WHERE username = $1', [username])
+
+    if (rows.length) {
+      res.status(409).json({ message: 'Пользователь с таким именем уже существует' })
+      return
+    }
+
+    next()
+  } catch (err) {
+    next(err)
   }
-
-  next()
 }
 
 const verifyToken = (req, res, next) => {

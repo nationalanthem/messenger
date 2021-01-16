@@ -2,6 +2,9 @@ import { NoticeActionTypes } from './notice/actions'
 import { AuthActionTypes } from './auth/actions'
 import { UserActionTypes } from './user/actions'
 import { MessagesActionTypes } from './messages/actions'
+import { DialogActionTypes } from './dialog/actions'
+
+import { LastMessageFromEachUser } from '../../api/messages.api'
 
 // notice
 
@@ -55,17 +58,20 @@ export type UserState = User | null
 
 export interface SetMessages {
   type: typeof MessagesActionTypes.SET_MESSAGES
-  payload: Message[]
+  payload: LastMessageFromEachUser[]
 }
 
 export type MessagesActions = SetMessages
 
-export interface Message {
-  user_id: string
-  username: string
-  avatar: string | null
-  message_id: string
-  text: string
+export type MessagesState = LastMessageFromEachUser[] | null
+
+// dialog
+
+export interface SetDialogUserId {
+  type: typeof DialogActionTypes.SET_DIALOG_USER_ID
+  payload: number
 }
 
-export type MessagesState = Message[] | null
+export type DialogActions = SetDialogUserId
+
+export type DialogState = number | null

@@ -1,6 +1,7 @@
 @import '../../styles/constants';
 
 .person-item {
+  position: relative;
   display: flex;
   align-items: center;
   background-color: $darkest;
@@ -8,17 +9,21 @@
   cursor: pointer;
   transition: background-color 0.3s;
 
-  &:hover {
+  &--active {
     background-color: $darker;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      top: 0;
+      right: 0;
+      background-color: $secondary;
+    }
   }
 
-  &__avatar {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    margin-right: 15px;
-    background-color: white;
-    border-radius: 50%;
+  &:hover {
+    background-color: $darker;
   }
 
   &__main {

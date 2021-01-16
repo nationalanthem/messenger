@@ -2,17 +2,15 @@ import './message.scss'
 
 interface MessageProps {
   type: 'to' | 'from'
+  text: string
+  timestamp: string
 }
 
-const Message: React.FC<MessageProps> = ({ type }) => {
+const Message: React.FC<MessageProps> = ({ type, text, timestamp }) => {
   return (
     <div className={`message message--${type}`}>
-      <div className="message__text">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veniam suscipit ipsam est,
-        voluptatem odio minus voluptatum, et laborum officia non quas ducimus quis ea dignissimos.
-      </div>
-      <div className="message__avatar"></div>
-      <div className="message__timestamp">3:45 PM</div>
+      <div className="message__text">{text}</div>
+      <div className="message__timestamp">{timestamp}</div>
     </div>
   )
 }
