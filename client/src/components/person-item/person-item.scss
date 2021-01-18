@@ -63,9 +63,19 @@
   }
 }
 
+@media screen and (max-width: 800px) {
+  .person-item {
+    &__main {
+      &__message {
+        display: none;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 500px) {
   .person-item {
-    padding: 20px;
+    padding: 15px;
     justify-content: center;
 
     & .avatar {

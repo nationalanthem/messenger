@@ -17,7 +17,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ messages }) => {
             <Message
               key={message.message_id}
               text={message.text}
-              timestamp={'11:59 PM'}
+              timestamp={message.created_at}
               type={message.type}
             />
           ))
