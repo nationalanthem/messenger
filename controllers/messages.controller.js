@@ -5,7 +5,7 @@ const getLastMessageFromEachUser = async (req, res) => {
     'SELECT u.id AS user_id, u.username, u.avatar FROM users AS u INNER JOIN messages AS m ON u.id = m.sender WHERE m.receiver = $1 GROUP BY u.id'
 
   const lastMessageString =
-    'SELECT id AS message_id, text FROM messages WHERE id = (SELECT MAX(id) FROM messages WHERE sender IN ($1, $2) AND receiver IN ($1, $2))'
+    'SELECT id AS message_id, text, created_at FROM messages WHERE id = (SELECT MAX(id) FROM messages WHERE sender IN ($1, $2) AND receiver IN ($1, $2))'
 
   try {
     const sendersByIdQuery = await db.query(sendersByIdString, [req.user.id])
@@ -23,7 +23,7 @@ const getLastMessageFromEachUser = async (req, res) => {
 }
 
 const getDialogData = async (req, res) => {
-  const senderDataString = 'SELECT id, username, avatar FROM users WHERE id = $1'
+  const senderDataString = 'SELECT id, username, avatar, last_seen FROM users WHERE id = $1'
   const messagesString =
     'SELECT * FROM messages WHERE sender IN ($1, $2) AND receiver IN ($1, $2) ORDER BY id'
 
@@ -31,27 +31,25 @@ const getDialogData = async (req, res) => {
     const senderDataQuery = await db.query(senderDataString, [req.params.id])
     const messagesQuery = await db.query(messagesString, [req.params.id, req.user.id])
 
-    const senderData = {
+    const dialogData = {
       user_id: senderDataQuery.rows[0].id,
       username: senderDataQuery.rows[0].username,
       avatar: senderDataQuery.rows[0].avatar,
+      last_seen: senderDataQuery.rows[0].last_seen,
+      messages: [],
     }
 
-    const messages = []
-
     messagesQuery.rows.forEach((row) => {
-      messages.push({
+      dialogData.messages.push({
         message_id: row.id,
         text: row.text,
         type: row.sender === req.user.id ? 'to' : 'from',
+        created_at: row.created_at,
       })
     })
 
     res.json({
-      user_id: senderData.user_id,
-      username: senderData.username,
-      avatar: senderData.avatar,
-      messages,
+      ...dialogData,
     })
   } catch (err) {
     res.sendStatus(500)
@@ -66,6 +64,8 @@ const sendMessageToUser = async (req, res) => {
     await db.query(string, [req.body.text, req.user.id, req.params.id])
 
     res.sendStatus(201)
+
+    await db.query('UPDATE users SET last_seen = $1 WHERE id = $2', [Date.now(), req.user.id])
   } catch (err) {
     res.sendStatus(500)
     console.log(err)

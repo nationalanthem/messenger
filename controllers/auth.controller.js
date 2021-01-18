@@ -20,7 +20,9 @@ const login = async (req, res) => {
 
     const token = jwt.sign(user, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' })
 
-    res.json({ ...user, token })
+    res.json({ token })
+
+    await db.query('UPDATE users SET last_seen = $1 WHERE id = $2', [Date.now(), rows[0].id])
   } catch (err) {
     res.sendStatus(500)
     console.log(err)

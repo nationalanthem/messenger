@@ -1,6 +1,7 @@
 @import '../../styles/constants';
 
 .side-menu {
+  min-width: 75px;
   width: 25vw;
   height: 100vh;
   background-color: $darkest;

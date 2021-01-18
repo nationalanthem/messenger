@@ -49,7 +49,7 @@ const RegisterPage = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     if (data.password !== data.confirmPassword) {
-      setError('confirmPassword', { type: 'notEqual', message: 'Пароли не совпадают' })
+      setError('confirmPassword', { message: 'Пароли не совпадают' })
       return
     }
 
@@ -67,9 +67,9 @@ const RegisterPage = () => {
 
   return (
     <>
-      {registerError && <div className="register-error">{registerError}</div>}
+      {registerError && <div className="auth-error">{registerError}</div>}
 
-      <form className="register-form" onSubmit={onSubmit}>
+      <form className="auth-form" onSubmit={onSubmit}>
         <div className="form-field">
           <label htmlFor="username">Имя пользователя</label>
           <input
@@ -83,7 +83,7 @@ const RegisterPage = () => {
         </div>
 
         <div className="form-field">
-          <label htmlFor="username">Пароль</label>
+          <label htmlFor="password">Пароль</label>
           <input
             id="password"
             className="input-field"
@@ -112,7 +112,7 @@ const RegisterPage = () => {
           Зарегистрироваться
         </button>
       </form>
-      <div className="already-exist">
+      <div className="auth-exist-info">
         Уже есть аккаунт?{' '}
         <Link to="/login" className="link">
           Войдите

@@ -1,4 +1,4 @@
-import SideMenuFilter from '../side-menu-filter/side-menu-filter'
+// import SideMenuFilter from '../side-menu-filter/side-menu-filter'
 import PersonItem from '../person-item/person-item'
 import './side-menu.scss'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,7 +12,7 @@ const SideMenu = () => {
 
   return (
     <div className="side-menu">
-      <SideMenuFilter />
+      {/* <SideMenuFilter /> */}
       {messages
         ? messages.map((msg) => {
             return (
@@ -20,7 +20,7 @@ const SideMenu = () => {
                 key={msg.lastMessage.message_id}
                 username={msg.username}
                 text={msg.lastMessage.text}
-                timestamp={'11:59 PM'}
+                timestamp={msg.lastMessage.created_at}
                 user_id={msg.user_id}
                 requestDispatchUserId={() => void dispatch(setDialogUserId(msg.user_id))}
               />

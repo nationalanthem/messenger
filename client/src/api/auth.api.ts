@@ -1,9 +1,7 @@
 import { AxiosResponse } from 'axios'
-import axios from '../config/axios.config'
+import axios from 'axios'
 
 interface LoginResponse {
-  id: string
-  username: string
   token: string
 }
 

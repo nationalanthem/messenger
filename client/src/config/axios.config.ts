@@ -1,9 +1,8 @@
 import axios from 'axios'
 
-const token = localStorage.getItem('token')
-
-const headers = token ? { Authorization: `Bearer ${token}` } : {}
-
-const instance = axios.create({ headers })
-
-export default instance
+export const updateAxiosHeaders = () => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  }
+}

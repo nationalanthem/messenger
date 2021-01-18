@@ -1,11 +1,8 @@
+import axios from 'axios'
 import { AxiosResponse } from 'axios'
-import axios from '../config/axios.config'
+import { User } from './types'
 
-interface GetMyUserdataResponse {
-  id: string
-  username: string
-  avatar: string | null
-}
+type GetMyUserdataResponse = User
 
 export const userAPI = {
   getMyUserdata(): Promise<AxiosResponse<GetMyUserdataResponse>> {

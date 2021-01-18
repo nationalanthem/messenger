@@ -13,6 +13,7 @@ import { clearNotice } from './redux/re-ducks/notice/actions'
 import { setAuthStatus } from './redux/re-ducks/auth/actions'
 import { fetchUser } from './redux/re-ducks/user/effects'
 import { fetchMessages } from './redux/re-ducks/messages/effects'
+import { updateAxiosHeaders } from './config/axios.config'
 
 import './app.scss'
 
@@ -24,6 +25,7 @@ const App = () => {
 
   useEffect(() => {
     if (isAuth) {
+      updateAxiosHeaders()
       dispatch(fetchUser())
       dispatch(fetchMessages())
     }
@@ -33,6 +35,7 @@ const App = () => {
     const handleStorageChange = () => {
       dispatch(setAuthStatus(!!localStorage.getItem('token')))
       dispatch(clearNotice())
+      updateAxiosHeaders()
     }
 
     window.addEventListener('storage', handleStorageChange)

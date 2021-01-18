@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { DialogData, messagesAPI } from '../../api/messages.api'
-import { selectDialogUserId } from '../../redux/re-ducks/dialog/selectors'
+import { selectUserId } from '../../redux/re-ducks/dialog/selectors'
 import DialogHeader from '../dialog-header/dialog-header'
 import MessageBox from '../message-box/message-box'
 import MessageSubmit from '../message-submit/message-submit'
@@ -11,19 +11,19 @@ const DialogWindow = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [messagesFromUser, setMessagesFromUser] = useState<DialogData>()
 
-  const dialogUserId = useSelector(selectDialogUserId)
+  const userId = useSelector(selectUserId)
 
   useEffect(() => {
-    if (dialogUserId) {
+    if (userId) {
       setIsLoading(true)
-      messagesAPI.getDialogData(dialogUserId).then((response) => {
+      messagesAPI.getDialogData(userId).then((response) => {
         setMessagesFromUser(response.data)
         setIsLoading(false)
       })
     }
-  }, [dialogUserId])
+  }, [userId])
 
-  if (!dialogUserId)
+  if (!userId)
     return (
       <div className="idle-wrapper">
         <h2>Выберите диалог из списка или начните новый</h2>

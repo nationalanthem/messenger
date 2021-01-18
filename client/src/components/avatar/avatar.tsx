@@ -17,7 +17,7 @@ const Avatar: React.FC<AvatarProps> = ({ size, children }) => {
 
   return (
     <div style={styles} className="avatar">
-      {children && children.charAt(0).toUpperCase()}
+      {children?.charAt(0).toUpperCase()}
     </div>
   )
 }

@@ -1,7 +1,9 @@
 import './person-item.scss'
 import Avatar from '../avatar/avatar'
 import { useSelector } from 'react-redux'
-import { selectDialogUserId } from '../../redux/re-ducks/dialog/selectors'
+import { selectUserId } from '../../redux/re-ducks/dialog/selectors'
+import { ru } from 'date-fns/locale'
+import { format } from 'date-fns'
 
 interface PersonItemProps {
   username: string
@@ -18,18 +20,22 @@ const PersonItem: React.FC<PersonItemProps> = ({
   user_id,
   requestDispatchUserId,
 }) => {
-  const currentDialogUserId = useSelector(selectDialogUserId)
+  const currentUserId = useSelector(selectUserId)
 
-  const className = `person-item${currentDialogUserId === user_id ? ' person-item--active' : ''}`
+  const className = `person-item${currentUserId === user_id ? ' person-item--active' : ''}`
 
   return (
-    <div onClick={requestDispatchUserId} className={className}>
+    <div title={username} onClick={requestDispatchUserId} className={className}>
       <Avatar size={30}>{username}</Avatar>
       <div className="person-item__main">
         <h2 className="person-item__main__username">{username}</h2>
         <div className="person-item__main__message">
           <p className="person-item__main__message__content">{text}</p>
-          <p className="person-item__main__message__timestamp">{timestamp}</p>
+          <p className="person-item__main__message__timestamp">
+            {format(new Date(+timestamp), 'EEEEEE', {
+              locale: ru,
+            })}
+          </p>
         </div>
       </div>
     </div>

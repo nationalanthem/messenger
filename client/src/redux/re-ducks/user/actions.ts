@@ -1,4 +1,5 @@
-import { SetUser, User } from '../types'
+import { User } from '../../../api/types'
+import { SetUser } from '../types'
 
 export enum UserActionTypes {
   SET_USER = 'user/SET_USER',

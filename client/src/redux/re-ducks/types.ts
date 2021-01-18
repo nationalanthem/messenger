@@ -5,6 +5,7 @@ import { MessagesActionTypes } from './messages/actions'
 import { DialogActionTypes } from './dialog/actions'
 
 import { LastMessageFromEachUser } from '../../api/messages.api'
+import { User } from '../../api/types'
 
 // notice
 
@@ -46,13 +47,7 @@ export interface SetUser {
 
 export type UserActions = SetUser
 
-export interface User {
-  id: string
-  username: string
-  avatar: string | null
-}
-
-export type UserState = User | null
+export type UserState = Omit<User, 'last_seen'> | null
 
 // messages
 

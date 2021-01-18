@@ -1,29 +1,17 @@
+import axios from 'axios'
 import { AxiosResponse } from 'axios'
-import axios from '../config/axios.config'
+import { User, Message } from './types'
 
-export interface DialogData {
-  user_id: string
-  username: string
-  avatar: string | null
-  messages: {
-    message_id: string
-    text: string
-    type: 'to' | 'from'
-  }[]
+export interface DialogData extends User {
+  messages: Array<Message & { type: 'to' | 'from' }>
 }
 
-export interface LastMessageFromEachUser {
-  user_id: number
-  username: string
-  avatar: string | null
-  lastMessage: {
-    message_id: string
-    text: string
-  }
+export interface LastMessageFromEachUser extends Omit<User, 'last_seen'> {
+  lastMessage: Message
 }
 
 type GetLastMessageFromEachUserResponse = LastMessageFromEachUser[]
-interface GetDialogDataResponse extends DialogData {}
+type GetDialogDataResponse = DialogData
 
 export const messagesAPI = {
   getLastMessageFromEachUser(): Promise<AxiosResponse<GetLastMessageFromEachUserResponse>> {

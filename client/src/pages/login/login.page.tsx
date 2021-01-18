@@ -37,9 +37,9 @@ const LoginPage = () => {
 
   return (
     <>
-      {loginError && <div className="login-error">{loginError}</div>}
+      {loginError && <div className="auth-error">{loginError}</div>}
 
-      <form className="register-form" onSubmit={onSubmit}>
+      <form className="auth-form" onSubmit={onSubmit}>
         <div className="form-field">
           <label htmlFor="username">Имя пользователя</label>
           <input
@@ -54,7 +54,7 @@ const LoginPage = () => {
         </div>
 
         <div className="form-field">
-          <label htmlFor="username">Пароль</label>
+          <label htmlFor="password">Пароль</label>
           <input
             id="password"
             className="input-field"
@@ -69,7 +69,7 @@ const LoginPage = () => {
           Войти
         </button>
       </form>
-      <div className="not-exist">
+      <div className="auth-exist-info">
         Нет аккаунта?{' '}
         <Link to="/register" className="link">
           Зарегистрируйтесь

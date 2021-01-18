@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { messagesAPI } from '../../api/messages.api'
-import { selectDialogUserId } from '../../redux/re-ducks/dialog/selectors'
+import { selectUserId } from '../../redux/re-ducks/dialog/selectors'
 import { setNotice } from '../../redux/re-ducks/notice/actions'
 import './message-submit.scss'
 
@@ -10,7 +10,7 @@ const MessageSubmit = () => {
 
   const dispatch = useDispatch()
 
-  const userId = useSelector(selectDialogUserId)
+  const userId = useSelector(selectUserId)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value)
