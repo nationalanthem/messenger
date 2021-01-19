@@ -3,14 +3,16 @@ import { AxiosResponse } from 'axios'
 import { User, Message } from './types'
 
 export interface DialogData extends User {
-  messages: Array<Message & { type: 'to' | 'from' }>
+  messages: DialogMessage[]
 }
 
-export interface LastMessageFromEachUser extends Omit<User, 'last_seen'> {
+export type DialogMessage = Message & { type: 'to' | 'from' }
+
+export interface LastMessageFromUser extends Omit<User, 'last_seen'> {
   lastMessage: Message
 }
 
-type GetLastMessageFromEachUserResponse = LastMessageFromEachUser[]
+type GetLastMessageFromEachUserResponse = LastMessageFromUser[]
 type GetDialogDataResponse = DialogData
 
 export const messagesAPI = {

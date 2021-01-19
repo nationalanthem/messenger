@@ -1,11 +1,17 @@
 import { NoticeActionTypes } from './notice/actions'
 import { AuthActionTypes } from './auth/actions'
 import { UserActionTypes } from './user/actions'
-import { MessagesActionTypes } from './messages/actions'
+import { LastMessagesActionTypes } from './lastMessages/actions'
 import { DialogActionTypes } from './dialog/actions'
 
-import { LastMessageFromEachUser } from '../../api/messages.api'
+import { DialogData, DialogMessage, LastMessageFromUser } from '../../api/messages.api'
 import { User } from '../../api/types'
+
+export enum LoadingState {
+  IDLE = 'IDLE',
+  LOADING = 'LOADING',
+  LOADED = 'LOADED',
+}
 
 // notice
 
@@ -49,16 +55,23 @@ export type UserActions = SetUser
 
 export type UserState = Omit<User, 'last_seen'> | null
 
-// messages
+// lastMessages
 
-export interface SetMessages {
-  type: typeof MessagesActionTypes.SET_MESSAGES
-  payload: LastMessageFromEachUser[]
+export interface SetLastMessages {
+  type: typeof LastMessagesActionTypes.SET_LAST_MESSAGES
+  payload: LastMessageFromUser[]
 }
 
-export type MessagesActions = SetMessages
+export type LastMessageFromDialog = Pick<LastMessageFromUser, 'user_id' | 'lastMessage'>
 
-export type MessagesState = LastMessageFromEachUser[] | null
+export interface SetLastUserMessage {
+  type: typeof LastMessagesActionTypes.SET_LAST_USER_MESSAGE
+  payload: LastMessageFromDialog
+}
+
+export type LastMessagesActions = SetLastMessages | SetLastUserMessage
+
+export type LastMessagesState = LastMessageFromUser[]
 
 // dialog
 
@@ -67,6 +80,27 @@ export interface SetDialogUserId {
   payload: number
 }
 
-export type DialogActions = SetDialogUserId
+export interface AddDialogMessage {
+  type: typeof DialogActionTypes.ADD_DIALOG_MESSAGE
+  payload: DialogMessage
+}
 
-export type DialogState = number | null
+export interface FetchDialogDataStart {
+  type: typeof DialogActionTypes.FETCH_DIALOG_START
+}
+export interface FetchDialogDataSuccess {
+  type: typeof DialogActionTypes.FETCH_DIALOG_SUCCESS
+  payload: DialogData
+}
+
+export type DialogActions =
+  | SetDialogUserId
+  | AddDialogMessage
+  | FetchDialogDataStart
+  | FetchDialogDataSuccess
+
+export interface DialogState {
+  current_user_id: number | null
+  data: DialogData | null
+  status: LoadingState
+}

@@ -3,16 +3,13 @@ import Message from '../message/message'
 import './message-box.scss'
 
 interface MessageBoxProps {
-  messages: DialogData['messages']
+  messages: Readonly<DialogData['messages']>
 }
 
 const MessageBox: React.FC<MessageBoxProps> = ({ messages }) => {
   return (
     <div className="message-box">
-      {/* <Message type="to" />
-      <Message type="from" /> */}
-
-      {messages
+      {messages.length
         ? messages.map((message) => (
             <Message
               key={message.message_id}

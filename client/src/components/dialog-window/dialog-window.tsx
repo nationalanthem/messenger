@@ -1,41 +1,43 @@
-import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { DialogData, messagesAPI } from '../../api/messages.api'
-import { selectUserId } from '../../redux/re-ducks/dialog/selectors'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchDialogData } from '../../redux/re-ducks/dialog/effects'
+import {
+  isDialogLoading,
+  selectDialogData,
+  selectUserId,
+} from '../../redux/re-ducks/dialog/selectors'
 import DialogHeader from '../dialog-header/dialog-header'
 import MessageBox from '../message-box/message-box'
 import MessageSubmit from '../message-submit/message-submit'
 import './dialog-window.scss'
 
 const DialogWindow = () => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [messagesFromUser, setMessagesFromUser] = useState<DialogData>()
+  const dispatch = useDispatch()
 
-  const userId = useSelector(selectUserId)
+  const isLoading = useSelector(isDialogLoading)
+
+  const user_id = useSelector(selectUserId)
+  const dialogData = useSelector(selectDialogData)
 
   useEffect(() => {
-    if (userId) {
-      setIsLoading(true)
-      messagesAPI.getDialogData(userId).then((response) => {
-        setMessagesFromUser(response.data)
-        setIsLoading(false)
-      })
+    if (user_id != null) {
+      dispatch(fetchDialogData(user_id))
     }
-  }, [userId])
+  }, [user_id, dispatch])
 
-  if (!userId)
+  if (user_id == null)
     return (
       <div className="idle-wrapper">
         <h2>Выберите диалог из списка или начните новый</h2>
       </div>
     )
 
-  if (!messagesFromUser || isLoading) return null
+  if (isLoading || !dialogData) return null
 
   return (
     <div className="dialog-window">
-      <DialogHeader username={messagesFromUser.username} timestamp={messagesFromUser.last_seen} />
-      <MessageBox messages={messagesFromUser.messages} />
+      <DialogHeader username={dialogData.username} timestamp={dialogData.last_seen} />
+      <MessageBox messages={dialogData.messages} />
       <MessageSubmit />
     </div>
   )
