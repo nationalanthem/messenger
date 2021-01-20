@@ -7,8 +7,8 @@ import { format } from 'date-fns'
 
 interface PersonItemProps {
   username: string
-  text: string
-  timestamp: string
+  text?: string
+  timestamp?: string
   user_id: number
   requestDispatchUserId: () => void
 }
@@ -29,14 +29,16 @@ const PersonItem: React.FC<PersonItemProps> = ({
       <Avatar size={30}>{username}</Avatar>
       <div className="person-item__main">
         <h2 className="person-item__main__username">{username}</h2>
-        <div className="person-item__main__message">
-          <p className="person-item__main__message__content">{text}</p>
-          <p className="person-item__main__message__timestamp">
-            {format(new Date(+timestamp), 'EEEEEE', {
-              locale: ru,
-            })}
-          </p>
-        </div>
+        {text != null && timestamp != null && (
+          <div className="person-item__main__message">
+            <p className="person-item__main__message__content">{text}</p>
+            <p className="person-item__main__message__timestamp">
+              {format(new Date(+timestamp), 'EEEEEE', {
+                locale: ru,
+              })}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )

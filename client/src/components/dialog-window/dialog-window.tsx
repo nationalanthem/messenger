@@ -37,7 +37,7 @@ const DialogWindow = () => {
   return (
     <div className="dialog-window">
       <DialogHeader username={dialogData.username} timestamp={dialogData.last_seen} />
-      <MessageBox messages={dialogData.messages} />
+      <MessageBox />
       <MessageSubmit />
     </div>
   )

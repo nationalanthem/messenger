@@ -1,13 +1,34 @@
+import { useDispatch, useSelector } from 'react-redux'
+import { setFilter } from '../../redux/re-ducks/filter/actions'
+import { selectFilter } from '../../redux/re-ducks/filter/selectors'
+import { SearchFilter } from '../../redux/re-ducks/types'
 import './side-menu-filter.scss'
 
 const SideMenuFilter = () => {
+  const dispatch = useDispatch()
+
+  const currentFilter = useSelector(selectFilter)
+
+  const handleFilterSelect = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const target = event.target as HTMLButtonElement
+    const clickedFilter = target.name as SearchFilter
+
+    if (currentFilter !== clickedFilter) {
+      dispatch(setFilter(clickedFilter))
+    }
+  }
+
   return (
     <div className="side-menu-filter">
-      <button type="button" className="side-menu-filter__btn">
-        1
-      </button>
-      <button type="button" className="side-menu-filter__btn">
-        2
+      <button
+        name="search_users"
+        type="button"
+        onClick={handleFilterSelect}
+        className={`side-menu-filter__btn${
+          currentFilter === 'search_users' ? ' side-menu-filter__btn--active' : ''
+        }`}
+      >
+        П
       </button>
     </div>
   )

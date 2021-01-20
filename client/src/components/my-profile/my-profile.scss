@@ -1,0 +1,36 @@
+@import '../../styles/constants';
+
+.my-profile {
+  display: flex;
+  background-color: $darker;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    flex: auto;
+    padding: 10px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__exit {
+    height: 100%;
+    width: 20px;
+    background-color: $secondary;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    transition: box-shadow 0.1s;
+
+    &:hover,
+    &:focus {
+      box-shadow: 0 0 5px 1px $secondary;
+    }
+
+    &:active {
+      box-shadow: 0 0 5px 3px $secondary;
+    }
+  }
+}

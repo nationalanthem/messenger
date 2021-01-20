@@ -3,6 +3,7 @@ import { AuthActionTypes } from './auth/actions'
 import { UserActionTypes } from './user/actions'
 import { LastMessagesActionTypes } from './lastMessages/actions'
 import { DialogActionTypes } from './dialog/actions'
+import { FilterActionTypes } from './filter/actions'
 
 import { DialogData, DialogMessage, LastMessageFromUser } from '../../api/messages.api'
 import { User } from '../../api/types'
@@ -104,3 +105,20 @@ export interface DialogState {
   data: DialogData | null
   status: LoadingState
 }
+
+// filter
+
+export type SearchFilter = 'search_users'
+
+export interface SetFilter {
+  type: typeof FilterActionTypes.SET_FILTER
+  payload: SearchFilter
+}
+
+export interface ClearFilter {
+  type: typeof FilterActionTypes.CLEAR_FILTER
+}
+
+export type FilterActions = SetFilter | ClearFilter
+
+export type FilterState = SearchFilter | null

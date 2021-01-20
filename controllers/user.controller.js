@@ -11,6 +11,18 @@ const getMyUserdata = async (req, res) => {
   }
 }
 
+const getUsersByUsername = async (req, res) => {
+  const string = 'SELECT id as user_id, username, avatar FROM users WHERE username ~* $1'
+  try {
+    const { rows } = await db.query(string, [req.params.username])
+    res.json({ users: rows })
+  } catch (err) {
+    res.sendStatus(500)
+    console.log(err)
+  }
+}
+
 module.exports = {
   getMyUserdata,
+  getUsersByUsername,
 }
