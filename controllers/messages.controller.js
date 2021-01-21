@@ -4,18 +4,32 @@ const getLastMessageFromEachUser = async (req, res) => {
   const sendersByIdString =
     'SELECT u.id AS user_id, u.username, u.avatar FROM users AS u INNER JOIN messages AS m ON u.id = m.sender WHERE m.receiver = $1 GROUP BY u.id'
 
+  const receiversByIdString =
+    'SELECT u.id AS user_id, u.username, u.avatar FROM users AS u INNER JOIN messages AS m ON u.id = m.receiver WHERE m.sender = $1 GROUP BY u.id'
+
   const lastMessageString =
     'SELECT id AS message_id, text, created_at FROM messages WHERE id = (SELECT MAX(id) FROM messages WHERE sender IN ($1, $2) AND receiver IN ($1, $2))'
 
   try {
     const sendersByIdQuery = await db.query(sendersByIdString, [req.user.id])
+    const receiversByIdQuery = await db.query(receiversByIdString, [req.user.id])
 
-    for (const sender of sendersByIdQuery.rows) {
-      const lastMessageQuery = await db.query(lastMessageString, [req.user.id, sender.user_id])
-      sender.lastMessage = lastMessageQuery.rows[0]
+    const sendersIdx = sendersByIdQuery.rows.map((row) => row.user_id)
+
+    const participants = sendersByIdQuery.rows.concat(
+      receiversByIdQuery.rows.filter((receiverRow) => {
+        if (!sendersIdx.includes(receiverRow.user_id)) {
+          return true
+        }
+      })
+    )
+
+    for (const participant of participants) {
+      const lastMessageQuery = await db.query(lastMessageString, [req.user.id, participant.user_id])
+      participant.lastMessage = lastMessageQuery.rows[0]
     }
 
-    res.json(sendersByIdQuery.rows)
+    res.json(participants)
   } catch (err) {
     res.sendStatus(500)
     console.log(err)

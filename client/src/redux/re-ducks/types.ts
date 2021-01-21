@@ -70,7 +70,12 @@ export interface SetLastUserMessage {
   payload: LastMessageFromDialog
 }
 
-export type LastMessagesActions = SetLastMessages | SetLastUserMessage
+export interface AddNewMessage {
+  type: typeof LastMessagesActionTypes.ADD_NEW_MESSAGE
+  payload: LastMessageFromUser
+}
+
+export type LastMessagesActions = SetLastMessages | SetLastUserMessage | AddNewMessage
 
 export type LastMessagesState = LastMessageFromUser[]
 

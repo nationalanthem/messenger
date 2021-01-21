@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DialogMessage, messagesAPI } from '../../api/messages.api'
 import { addDialogMessage } from '../../redux/re-ducks/dialog/actions'
-import { selectUserId } from '../../redux/re-ducks/dialog/selectors'
-import { setLastUserMessage } from '../../redux/re-ducks/lastMessages/actions'
+import { selectDialogData, selectUserId } from '../../redux/re-ducks/dialog/selectors'
+import { addNewMessage, setLastUserMessage } from '../../redux/re-ducks/lastMessages/actions'
+import { selectIsUserInMessagesList } from '../../redux/re-ducks/lastMessages/selectors'
 import './message-submit.scss'
 
 const MessageSubmit = () => {
@@ -11,15 +12,17 @@ const MessageSubmit = () => {
 
   const dispatch = useDispatch()
 
-  const user_id = useSelector(selectUserId)
+  const user_id = useSelector(selectUserId)!
+  const dialogData = useSelector(selectDialogData)
+  const userIsInMessagesList = useSelector(selectIsUserInMessagesList(user_id))
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value)
   }
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!text || !user_id) return
+    if (!text.trim() || !dialogData) return
 
     const message: DialogMessage = {
       message_id: Date.now().toString(),
@@ -30,7 +33,18 @@ const MessageSubmit = () => {
 
     dispatch(addDialogMessage(message))
 
-    dispatch(setLastUserMessage({ user_id, lastMessage: message }))
+    if (userIsInMessagesList) {
+      dispatch(setLastUserMessage({ user_id, lastMessage: message }))
+    } else {
+      dispatch(
+        addNewMessage({
+          avatar: dialogData.avatar,
+          user_id,
+          username: dialogData.username,
+          lastMessage: message,
+        })
+      )
+    }
 
     messagesAPI.sendMessageToUser(user_id, text)
 
@@ -38,7 +52,7 @@ const MessageSubmit = () => {
   }
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleSubmit}>
       <input
         className="message-input"
         onChange={handleInputChange}

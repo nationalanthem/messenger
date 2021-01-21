@@ -23,12 +23,13 @@ const SideMenuFilter = () => {
       <button
         name="search_users"
         type="button"
+        disabled={currentFilter === 'search_users'}
         onClick={handleFilterSelect}
         className={`side-menu-filter__btn${
           currentFilter === 'search_users' ? ' side-menu-filter__btn--active' : ''
         }`}
       >
-        П
+        Поиск
       </button>
     </div>
   )

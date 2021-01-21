@@ -14,6 +14,9 @@ const lastMessagesReducer = produce(
         let idx = draft.findIndex((u) => u.user_id === action.payload.user_id)
         if (idx !== -1) draft[idx].lastMessage = action.payload.lastMessage
         break
+      case LastMessagesActionTypes.ADD_NEW_MESSAGE:
+        draft.push(action.payload)
+        break
     }
   },
   initialState

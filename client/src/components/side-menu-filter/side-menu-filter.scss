@@ -1,42 +1,44 @@
 @import '../../styles/constants';
 
 .side-menu-filter {
-  display: flex;
-  justify-content: flex-end;
-  padding: 30px 0;
+  margin-left: auto;
+  padding: 10px 0;
 
   &__btn {
-    text-align: center;
-    flex-shrink: 0;
     color: white;
     outline: none;
     border: none;
+    width: 60px;
+    height: 30px;
+    margin-right: 20px;
+    border-radius: 3px;
+    line-height: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
-    margin: 0 10px;
-    line-height: 40px;
-    border-radius: 50%;
-    background-color: $darker;
+    background-color: $dark;
 
     &:hover {
-      background-color: $dark;
+      opacity: 0.8;
     }
 
     &:active {
-      opacity: 0.7;
+      padding-top: 7px;
+      padding-bottom: 3px;
+    }
+
+    &:focus {
+      box-shadow: 0 0 2px 1px $primary;
+    }
+
+    &:disabled {
+      cursor: initial;
+      opacity: initial;
     }
 
     &--active {
       background-color: $primary;
-
-      &:hover {
-        background-color: $primary;
-      }
-
-      &:active {
-        opacity: initial;
-      }
+      box-shadow: 0 0 2px 1px $primary;
     }
   }
 }

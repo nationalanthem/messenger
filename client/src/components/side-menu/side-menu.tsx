@@ -18,12 +18,14 @@ const SideMenu = () => {
   const [foundUsers, setFoundUsers] = useState<GetUsersByUsernameResponse['users']>([])
 
   const handleFilterInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.value.trim()) {
+    const str = event.target.value.replace(/[^a-zA-Z0-9_]/g, '').trim()
+
+    if (!str) {
       setFoundUsers([])
       return
     }
 
-    userAPI.getUsersByUsername(event.target.value).then((response) => {
+    userAPI.getUsersByUsername(str).then((response) => {
       setFoundUsers(response.data.users)
     })
   }
@@ -44,10 +46,17 @@ const SideMenu = () => {
       <div className="person-list">
         {filter === 'search_users' ? (
           <>
-            <button type="button" onClick={handleFilterClearClick}>
-              Назад
-            </button>
-            <input type="text" onChange={handleFilterInputChange} />
+            <div className="filter">
+              <button className="filter__clear" type="button" onClick={handleFilterClearClick}>
+                Назад
+              </button>
+              <input
+                className="filter__input"
+                placeholder="Имя пользователя..."
+                type="text"
+                onChange={handleFilterInputChange}
+              />
+            </div>
             {foundUsers.map((user) => {
               return (
                 <PersonItem
