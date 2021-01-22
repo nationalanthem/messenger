@@ -7,46 +7,21 @@
   width: 25vw;
   height: 100vh;
   background-color: $darkest;
+
+  &__loading,
+  &__messages-empty {
+    text-align: center;
+  }
+
+  &__loading {
+    padding: 10px 0;
+  }
+
+  &__messages-empty {
+    color: $text-muted;
+  }
 }
 
 .person-list {
   flex: auto;
-}
-
-.filter {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  &__clear {
-    background-color: $secondary;
-    outline: 0;
-    border: 0;
-    color: #fff;
-    font-weight: bolder;
-    cursor: pointer;
-    padding: 10px;
-    margin-bottom: 10px;
-    &:active {
-      opacity: 0.8;
-      padding-top: 12px;
-      padding-bottom: 8px;
-    }
-    &:focus {
-      box-shadow: 0 0 2px 1px $secondary;
-    }
-  }
-  &__input {
-    background-color: $dark;
-    height: 30px;
-    color: #fff;
-    padding: 0 10px;
-    margin: 0 10px;
-    outline: none;
-    border: none;
-    border-radius: 3px;
-
-    &:focus {
-      box-shadow: 0 0 2px 2px $primary;
-    }
-  }
 }

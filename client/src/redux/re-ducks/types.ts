@@ -58,8 +58,11 @@ export type UserState = Omit<User, 'last_seen'> | null
 
 // lastMessages
 
-export interface SetLastMessages {
-  type: typeof LastMessagesActionTypes.SET_LAST_MESSAGES
+export interface FetchLastMessagesStart {
+  type: typeof LastMessagesActionTypes.FETCH_LAST_MESSAGES_START
+}
+export interface FetchLastMessagesSuccess {
+  type: typeof LastMessagesActionTypes.FETCH_LAST_MESSAGES_SUCCESS
   payload: LastMessageFromUser[]
 }
 
@@ -75,9 +78,16 @@ export interface AddNewMessage {
   payload: LastMessageFromUser
 }
 
-export type LastMessagesActions = SetLastMessages | SetLastUserMessage | AddNewMessage
+export type LastMessagesActions =
+  | FetchLastMessagesStart
+  | FetchLastMessagesSuccess
+  | SetLastUserMessage
+  | AddNewMessage
 
-export type LastMessagesState = LastMessageFromUser[]
+export interface LastMessagesState {
+  messages: LastMessageFromUser[]
+  status: LoadingState
+}
 
 // dialog
 

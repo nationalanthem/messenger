@@ -1,7 +1,5 @@
 import './person-item.scss'
 import Avatar from '../avatar/avatar'
-import { useSelector } from 'react-redux'
-import { selectUserId } from '../../redux/re-ducks/dialog/selectors'
 import { ru } from 'date-fns/locale'
 import { format } from 'date-fns'
 
@@ -9,7 +7,7 @@ interface PersonItemProps {
   username: string
   text?: string
   timestamp?: string
-  user_id: number
+  isSelected: boolean
   requestDispatchUserId: () => void
 }
 
@@ -17,12 +15,10 @@ const PersonItem: React.FC<PersonItemProps> = ({
   username,
   text,
   timestamp,
-  user_id,
+  isSelected,
   requestDispatchUserId,
 }) => {
-  const currentUserId = useSelector(selectUserId)
-
-  const className = `person-item${currentUserId === user_id ? ' person-item--active' : ''}`
+  const className = `person-item${isSelected ? ' person-item--active' : ''}`
 
   return (
     <div title={username} onClick={requestDispatchUserId} className={className}>

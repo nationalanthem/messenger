@@ -1,29 +1,11 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchDialogData } from '../../redux/re-ducks/dialog/effects'
-import {
-  isDialogLoading,
-  selectDialogData,
-  selectUserId,
-} from '../../redux/re-ducks/dialog/selectors'
 import DialogHeader from '../dialog-header/dialog-header'
 import MessageBox from '../message-box/message-box'
 import MessageSubmit from '../message-submit/message-submit'
+import { useDialogWindow } from './useDialogWindow'
 import './dialog-window.scss'
 
 const DialogWindow = () => {
-  const dispatch = useDispatch()
-
-  const isLoading = useSelector(isDialogLoading)
-
-  const user_id = useSelector(selectUserId)
-  const dialogData = useSelector(selectDialogData)
-
-  useEffect(() => {
-    if (user_id != null) {
-      dispatch(fetchDialogData(user_id))
-    }
-  }, [user_id, dispatch])
+  const { dialogData, user_id, isLoading, msgBoxRef } = useDialogWindow()
 
   if (user_id == null)
     return (
@@ -37,8 +19,12 @@ const DialogWindow = () => {
   return (
     <div className="dialog-window">
       <DialogHeader username={dialogData.username} timestamp={dialogData.last_seen} />
-      <MessageBox />
-      <MessageSubmit />
+      <MessageBox messages={dialogData.messages} ref={msgBoxRef} />
+      <MessageSubmit
+        username={dialogData.username}
+        avatar={dialogData.avatar}
+        user_id={dialogData.user_id}
+      />
     </div>
   )
 }

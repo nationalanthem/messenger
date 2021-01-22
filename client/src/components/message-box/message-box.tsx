@@ -1,25 +1,16 @@
-import { useLayoutEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
-import { selectDialogData } from '../../redux/re-ducks/dialog/selectors'
+import { forwardRef } from 'react'
+import { DialogData } from '../../api/messages.api'
 import Message from '../message/message'
 import './message-box.scss'
 
-const MessageBox = () => {
-  const dialogData = useSelector(selectDialogData)
+interface MessageBoxProps {
+  messages: Readonly<DialogData['messages']>
+}
 
-  const msgBoxRef = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    if (dialogData && msgBoxRef.current) {
-      msgBoxRef.current.scrollTo({ top: msgBoxRef.current.scrollHeight })
-    }
-  }, [dialogData])
-
-  if (!dialogData) return null
-
+const MessageBox = forwardRef<HTMLDivElement, MessageBoxProps>(({ messages }, ref) => {
   return (
-    <div className="message-box" ref={msgBoxRef}>
-      {dialogData.messages.map((message) => (
+    <div className="message-box" ref={ref}>
+      {messages.map((message) => (
         <Message
           key={message.message_id}
           text={message.text}
@@ -29,6 +20,6 @@ const MessageBox = () => {
       ))}
     </div>
   )
-}
+})
 
 export default MessageBox

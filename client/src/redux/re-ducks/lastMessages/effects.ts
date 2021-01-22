@@ -1,10 +1,12 @@
 import { Dispatch } from 'redux'
 import { messagesAPI } from '../../../api/messages.api'
 import { LastMessagesActions } from '../types'
-import { setLastMessages } from './actions'
+import { fetchLastMessagesStart, fetchLastMessagesSuccess } from './actions'
 
-export const fetchLastMessages = () => (dispatch: Dispatch<LastMessagesActions>) => {
-  return messagesAPI.getLastMessageFromEachUser().then((response) => {
-    dispatch(setLastMessages(response.data))
-  })
+export const fetchLastMessages = () => async (dispatch: Dispatch<LastMessagesActions>) => {
+  dispatch(fetchLastMessagesStart())
+
+  const response = await messagesAPI.getLastMessageFromEachUser()
+
+  dispatch(fetchLastMessagesSuccess(response.data))
 }

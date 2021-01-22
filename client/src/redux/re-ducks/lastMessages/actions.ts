@@ -1,15 +1,30 @@
 import { LastMessageFromUser } from '../../../api/messages.api'
-import { SetLastMessages, SetLastUserMessage, LastMessageFromDialog, AddNewMessage } from '../types'
+import {
+  SetLastUserMessage,
+  LastMessageFromDialog,
+  AddNewMessage,
+  FetchLastMessagesSuccess,
+  FetchLastMessagesStart,
+} from '../types'
 
 export enum LastMessagesActionTypes {
-  SET_LAST_MESSAGES = 'lastMessages/SET_LAST_MESSAGES',
+  FETCH_LAST_MESSAGES_START = 'lastMessages/FETCH_LAST_MESSAGES_START',
+  FETCH_LAST_MESSAGES_SUCCESS = 'lastMessages/FETCH_LAST_MESSAGES_SUCCESS',
   SET_LAST_USER_MESSAGE = 'lastMessages/SET_LAST_USER_MESSAGE',
   ADD_NEW_MESSAGE = 'lastMessages/ADD_NEW_MESSAGE',
 }
 
-export const setLastMessages = (payload: LastMessageFromUser[]): SetLastMessages => {
+export const fetchLastMessagesStart = (): FetchLastMessagesStart => {
   return {
-    type: LastMessagesActionTypes.SET_LAST_MESSAGES,
+    type: LastMessagesActionTypes.FETCH_LAST_MESSAGES_START,
+  }
+}
+
+export const fetchLastMessagesSuccess = (
+  payload: LastMessageFromUser[]
+): FetchLastMessagesSuccess => {
+  return {
+    type: LastMessagesActionTypes.FETCH_LAST_MESSAGES_SUCCESS,
     payload,
   }
 }

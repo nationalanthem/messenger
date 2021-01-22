@@ -1,13 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setFilter } from '../../redux/re-ducks/filter/actions'
-import { selectFilter } from '../../redux/re-ducks/filter/selectors'
-import { SearchFilter } from '../../redux/re-ducks/types'
+import { FilterState, SearchFilter } from '../../redux/re-ducks/types'
 import './side-menu-filter.scss'
 
-const SideMenuFilter = () => {
-  const dispatch = useDispatch()
+interface SideMenuFilterProps {
+  currentFilter: FilterState
+}
 
-  const currentFilter = useSelector(selectFilter)
+const SideMenuFilter: React.FC<SideMenuFilterProps> = ({ currentFilter }) => {
+  const dispatch = useDispatch()
 
   const handleFilterSelect = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const target = event.target as HTMLButtonElement
