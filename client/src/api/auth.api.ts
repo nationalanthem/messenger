@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import axios from 'axios'
 
 interface LoginResponse {
@@ -10,7 +9,7 @@ export const auth = {
     return axios.post('/api/register', { username, password })
   },
 
-  login(username: string, password: string): Promise<AxiosResponse<LoginResponse>> {
-    return axios.post('/api/login', { username, password })
+  login(username: string, password: string) {
+    return axios.post<LoginResponse>('/api/login', { username, password })
   },
 }

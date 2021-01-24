@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+
   &__clear {
     background-color: $secondary;
     outline: 0;
@@ -22,6 +23,7 @@
       box-shadow: 0 0 2px 1px $secondary;
     }
   }
+
   &__input {
     background-color: $dark;
     height: 30px;
@@ -42,6 +44,7 @@
   &__error,
   &__loading {
     text-align: center;
+    padding: 0 10px;
   }
 
   &__idle {
@@ -54,5 +57,20 @@
 
   &__loading {
     padding: 10px 0;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .search {
+    &__input,
+    &__idle,
+    &__not-found,
+    &__error,
+    &__loading {
+      font-size: 13px;
+    }
+    &__input::placeholder {
+      visibility: hidden;
+    }
   }
 }

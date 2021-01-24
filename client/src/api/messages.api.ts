@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { AxiosResponse } from 'axios'
 import { User, Message } from './types'
 
 export interface DialogData extends User {
@@ -16,11 +15,11 @@ type GetLastMessageFromEachUserResponse = LastMessageFromUser[]
 type GetDialogDataResponse = DialogData
 
 export const messagesAPI = {
-  getLastMessageFromEachUser(): Promise<AxiosResponse<GetLastMessageFromEachUserResponse>> {
-    return axios.get('/api/messages/last')
+  getLastMessageFromEachUser() {
+    return axios.get<GetLastMessageFromEachUserResponse>('/api/messages/last')
   },
-  getDialogData(id: number): Promise<AxiosResponse<GetDialogDataResponse>> {
-    return axios.get(`/api/messages/from/${id}`)
+  getDialogData(id: number) {
+    return axios.get<GetDialogDataResponse>(`/api/messages/from/${id}`)
   },
   sendMessageToUser(id: number, text: string) {
     return axios.post(`/api/messages/sendTo/${id}`, { text })

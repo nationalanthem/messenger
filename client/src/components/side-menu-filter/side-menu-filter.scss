@@ -1,7 +1,7 @@
 @import '../../styles/constants';
 
 .side-menu-filter {
-  margin-left: auto;
+  margin: 0 20px 0 auto;
   padding: 10px 0;
 
   &__btn {
@@ -10,7 +10,6 @@
     border: none;
     width: 60px;
     height: 30px;
-    margin-right: 20px;
     border-radius: 3px;
     line-height: 20px;
     padding-top: 5px;
@@ -40,5 +39,11 @@
       background-color: $primary;
       box-shadow: 0 0 2px 1px $primary;
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side-menu-filter {
+    margin: 0 auto;
   }
 }

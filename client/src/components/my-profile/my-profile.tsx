@@ -17,7 +17,12 @@ const MyProfile: React.FC<MyProfileProps> = ({ username }) => {
         <Avatar size={30}>{username}</Avatar>
         <p>{username}</p>
       </div>
-      <button type="button" className="my-profile__exit" onClick={handleExit}></button>
+      <button
+        title="Выйти из аккаунта"
+        type="button"
+        className="my-profile__exit"
+        onClick={handleExit}
+      ></button>
     </div>
   )
 }

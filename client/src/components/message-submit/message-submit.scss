@@ -16,3 +16,9 @@
     box-shadow: 0 0 3px 2px $primary;
   }
 }
+
+@media screen and (max-width: 500px) {
+  .message-input {
+    font-size: 13px;
+  }
+}

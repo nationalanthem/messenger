@@ -46,18 +46,18 @@ const SideMenu = () => {
             )
           })
         ) : isMessagesLoading ? (
-          <div className="side-menu__loading">
-            <CircularProgress />
+          <div className="person-list__loading">
+            <CircularProgress size={60} />
           </div>
         ) : (
-          <p className="side-menu__messages-empty">Нет диалогов</p>
+          <p className="person-list__messages-empty">Нет диалогов</p>
         )}
       </div>
       {myUsername ? (
         <MyProfile username={myUsername} />
       ) : (
-        <div className="side-menu__loading">
-          <CircularProgress />
+        <div className="side-menu__my-profile-loading">
+          <CircularProgress size={30} />
         </div>
       )}
     </div>

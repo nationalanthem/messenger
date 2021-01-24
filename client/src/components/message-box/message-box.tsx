@@ -10,14 +10,18 @@ interface MessageBoxProps {
 const MessageBox = forwardRef<HTMLDivElement, MessageBoxProps>(({ messages }, ref) => {
   return (
     <div className="message-box" ref={ref}>
-      {messages.map((message) => (
-        <Message
-          key={message.message_id}
-          text={message.text}
-          timestamp={message.created_at}
-          type={message.type}
-        />
-      ))}
+      {messages.length ? (
+        messages.map((message) => (
+          <Message
+            key={message.message_id}
+            text={message.text}
+            timestamp={message.created_at}
+            type={message.type}
+          />
+        ))
+      ) : (
+        <p className="no-messages">Нет сообщений</p>
+      )}
     </div>
   )
 })

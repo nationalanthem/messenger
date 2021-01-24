@@ -5,13 +5,16 @@
   background-color: $darker;
 
   &__info {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    flex: auto;
+    width: calc(100% - 20px);
     padding: 10px;
 
     p {
       margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -31,6 +34,22 @@
 
     &:active {
       box-shadow: 0 0 5px 3px $secondary;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .my-profile {
+    &__info {
+      justify-content: center;
+
+      .avatar {
+        margin: 0;
+      }
+
+      p {
+        display: none;
+      }
     }
   }
 }
