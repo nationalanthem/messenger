@@ -1,32 +1,30 @@
 const db = require('../database')
 
 const getLastMessageFromEachUser = async (req, res) => {
-  const sendersByIdString =
-    'SELECT u.id AS user_id, u.username, u.avatar FROM users AS u INNER JOIN messages AS m ON u.id = m.sender WHERE m.receiver = $1 GROUP BY u.id'
-
-  const receiversByIdString =
-    'SELECT u.id AS user_id, u.username, u.avatar FROM users AS u INNER JOIN messages AS m ON u.id = m.receiver WHERE m.sender = $1 GROUP BY u.id'
-
+  const ownersByIdString =
+    'SELECT r.id AS room_id, u.id AS user_id, u.username, u.avatar FROM users AS u INNER JOIN rooms AS r ON u.id = r.owner WHERE r.partner = $1'
+  const partnersByIdString =
+    'SELECT r.id AS room_id, u.id AS user_id, u.username, u.avatar FROM users AS u INNER JOIN rooms AS r ON u.id = r.partner WHERE r.owner = $1'
   const lastMessageString =
-    'SELECT id AS message_id, text, created_at FROM messages WHERE id = (SELECT MAX(id) FROM messages WHERE sender IN ($1, $2) AND receiver IN ($1, $2))'
+    'SELECT id AS message_id, text, created_at FROM messages WHERE id = (SELECT MAX(id) FROM messages WHERE room_id = $1)'
 
   try {
-    const sendersByIdQuery = await db.query(sendersByIdString, [req.user.id])
-    const receiversByIdQuery = await db.query(receiversByIdString, [req.user.id])
+    const ownersByIdQuery = await db.query(ownersByIdString, [req.user.id])
+    const partnersByIdQuery = await db.query(partnersByIdString, [req.user.id])
 
-    const sendersIdx = sendersByIdQuery.rows.map((row) => row.user_id)
+    const ownersIdx = ownersByIdQuery.rows.map((row) => row.user_id)
 
-    const participants = sendersByIdQuery.rows.concat(
-      receiversByIdQuery.rows.filter((receiverRow) => {
-        if (!sendersIdx.includes(receiverRow.user_id)) {
+    const participants = ownersByIdQuery.rows.concat(
+      partnersByIdQuery.rows.filter((partnerRow) => {
+        if (!ownersIdx.includes(partnerRow.user_id)) {
           return true
         }
       })
     )
 
     for (const participant of participants) {
-      const lastMessageQuery = await db.query(lastMessageString, [req.user.id, participant.user_id])
-      participant.lastMessage = lastMessageQuery.rows[0]
+      const lastMessageQuery = await db.query(lastMessageString, [participant.room_id])
+      participant.lastMessage = lastMessageQuery.rows.length ? lastMessageQuery.rows[0] : null
     }
 
     res.json(participants)
@@ -38,29 +36,39 @@ const getLastMessageFromEachUser = async (req, res) => {
 
 const getDialogData = async (req, res) => {
   const senderDataString = 'SELECT id, username, avatar, last_seen FROM users WHERE id = $1'
-  const messagesString =
-    'SELECT * FROM messages WHERE sender IN ($1, $2) AND receiver IN ($1, $2) ORDER BY id'
+  const messagesString = 'SELECT * FROM messages WHERE room_id = $1 ORDER BY id'
+  const getRoomString = 'SELECT id FROM rooms WHERE owner IN ($1, $2) AND partner IN ($1, $2)'
+  const createRoomString = 'INSERT INTO rooms (owner, partner) VALUES ($1, $2) RETURNING id'
 
   try {
     const senderDataQuery = await db.query(senderDataString, [req.params.id])
-    const messagesQuery = await db.query(messagesString, [req.params.id, req.user.id])
+    const getRoomQuery = await db.query(getRoomString, [req.user.id, req.params.id])
+
+    let room_id
+    let messages
+
+    if (getRoomQuery.rows.length) {
+      messages = await db.query(messagesString, [getRoomQuery.rows[0].id])
+      room_id = getRoomQuery.rows[0].id
+    } else {
+      const createRoomQuery = await db.query(createRoomString, [req.user.id, req.params.id])
+      messages = await db.query(messagesString, [createRoomQuery.rows[0].id])
+      room_id = createRoomQuery.rows[0].id
+    }
 
     const dialogData = {
+      room_id,
       user_id: senderDataQuery.rows[0].id,
       username: senderDataQuery.rows[0].username,
       avatar: senderDataQuery.rows[0].avatar,
       last_seen: senderDataQuery.rows[0].last_seen,
-      messages: [],
-    }
-
-    messagesQuery.rows.forEach((row) => {
-      dialogData.messages.push({
+      messages: messages.rows.map((row) => ({
         message_id: row.id,
         text: row.text,
-        type: row.sender === req.user.id ? 'to' : 'from',
+        type: row.sent_by === req.user.id ? 'to' : 'from',
         created_at: row.created_at,
-      })
-    })
+      })),
+    }
 
     res.json({
       ...dialogData,
@@ -72,10 +80,10 @@ const getDialogData = async (req, res) => {
 }
 
 const sendMessageToUser = async (req, res) => {
-  const string = 'INSERT INTO messages (text, sender, receiver) VALUES ($1, $2, $3)'
+  const addMessageString = 'INSERT INTO messages (text, room_id, sent_by) VALUES ($1, $2, $3)'
 
   try {
-    await db.query(string, [req.body.text, req.user.id, req.params.id])
+    await db.query(addMessageString, [req.body.text, req.params.id, req.user.id])
 
     res.sendStatus(201)
 

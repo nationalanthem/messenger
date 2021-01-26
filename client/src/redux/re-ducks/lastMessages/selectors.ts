@@ -2,8 +2,8 @@ import { RootState } from '../../root-reducer'
 import { LoadingState } from '../types'
 
 export const selectLastMessages = (state: RootState) => state.lastMessages.messages
-export const selectIsUserInMessagesList = (userId: number) => (state: RootState) =>
-  state.lastMessages.messages.some((user) => user.user_id === userId)
+export const selectIsUserInMessagesList = (userId: number | null) => (state: RootState) =>
+  userId != null ? state.lastMessages.messages.some((user) => user.user_id === userId) : null
 
 export const selectIsMessagesLoading = (state: RootState) => {
   if (

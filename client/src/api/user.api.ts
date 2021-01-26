@@ -4,7 +4,7 @@ import { User } from './types'
 type GetMyUserdataResponse = User
 
 export interface GetUsersByUsernameResponse {
-  users: Omit<User, 'last_seen'>[]
+  users: Array<Omit<User, 'last_seen'>>
 }
 
 export const userAPI = {

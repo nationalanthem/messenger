@@ -6,6 +6,8 @@ import {
   selectUserId,
   selectDialogData,
 } from '../../redux/re-ducks/dialog/selectors'
+import { addNewMessage } from '../../redux/re-ducks/lastMessages/actions'
+import { selectIsUserInMessagesList } from '../../redux/re-ducks/lastMessages/selectors'
 
 export const useDialogWindow = () => {
   const dispatch = useDispatch()
@@ -13,6 +15,7 @@ export const useDialogWindow = () => {
   const isLoading = useSelector(isDialogLoading)
   const user_id = useSelector(selectUserId)
   const dialogData = useSelector(selectDialogData)
+  const userIsInMessagesList = useSelector(selectIsUserInMessagesList(user_id))
 
   const msgBoxRef = useRef<HTMLDivElement>(null)
 
@@ -27,6 +30,21 @@ export const useDialogWindow = () => {
       dispatch(fetchDialogData(user_id))
     }
   }, [user_id, dispatch])
+
+  useEffect(() => {
+    if (dialogData && dialogData.user_id === user_id && !userIsInMessagesList) {
+      dispatch(
+        addNewMessage({
+          user_id,
+          username: dialogData.username,
+          avatar: dialogData.avatar,
+          lastMessage: dialogData.messages.length
+            ? dialogData.messages[dialogData.messages.length - 1]
+            : null,
+        })
+      )
+    }
+  }, [dialogData, user_id, userIsInMessagesList, dispatch])
 
   return {
     user_id,

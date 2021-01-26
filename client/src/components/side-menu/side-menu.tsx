@@ -35,8 +35,8 @@ const SideMenu = () => {
               <PersonItem
                 key={msg.user_id}
                 username={msg.username}
-                text={msg.lastMessage.text}
-                timestamp={msg.lastMessage.created_at}
+                text={msg.lastMessage?.text}
+                timestamp={msg.lastMessage?.created_at}
                 isSelected={current_user_id === msg.user_id}
                 requestDispatchUserId={() => {
                   if (current_user_id === msg.user_id) return

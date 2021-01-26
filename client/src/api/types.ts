@@ -6,7 +6,7 @@ export interface User {
 }
 
 export interface Message {
-  message_id: string
+  message_id: number
   text: string
   created_at: string
 }

@@ -18,6 +18,7 @@ const dialogReducer = produce((draft: Draft<DialogState>, action: DialogActions)
       break
     case DialogActionTypes.FETCH_DIALOG_START:
       draft.status = LoadingState.LOADING
+      draft.data = null
       break
     case DialogActionTypes.FETCH_DIALOG_SUCCESS:
       draft.status = LoadingState.LOADED

@@ -12,7 +12,7 @@ export const fetchDialogData = (user_id: number) => async (
   const response = await messagesAPI.getDialogData(user_id)
 
   const messages = response.data.messages
-  const lastMessage = messages[messages.length - 1]
+  const lastMessage = messages.length ? messages[messages.length - 1] : null
   dispatch(setLastUserMessage({ user_id, lastMessage }))
 
   dispatch(fetchDialogDataSuccess(response.data))

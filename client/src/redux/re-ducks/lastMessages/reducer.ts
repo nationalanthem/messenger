@@ -12,6 +12,7 @@ const lastMessagesReducer = produce(
     switch (action.type) {
       case LastMessagesActionTypes.FETCH_LAST_MESSAGES_START:
         draft.status = LoadingState.LOADING
+        draft.messages = []
         break
       case LastMessagesActionTypes.FETCH_LAST_MESSAGES_SUCCESS:
         draft.status = LoadingState.LOADED

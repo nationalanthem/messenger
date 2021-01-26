@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DialogMessage, messagesAPI } from '../../api/messages.api'
 import { addDialogMessage } from '../../redux/re-ducks/dialog/actions'
+import { selectRoomId } from '../../redux/re-ducks/dialog/selectors'
 import { setLastUserMessage, addNewMessage } from '../../redux/re-ducks/lastMessages/actions'
 import { selectIsUserInMessagesList } from '../../redux/re-ducks/lastMessages/selectors'
 
@@ -11,6 +12,7 @@ export const useMessageSubmit = (user_id: number, avatar: string | null, usernam
   const dispatch = useDispatch()
 
   const userIsInMessagesList = useSelector(selectIsUserInMessagesList(user_id))
+  const room_id = useSelector(selectRoomId)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value)
@@ -18,10 +20,10 @@ export const useMessageSubmit = (user_id: number, avatar: string | null, usernam
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!text.trim()) return
+    if (!text.trim() || room_id == null) return
 
     const message: DialogMessage = {
-      message_id: Date.now().toString(),
+      message_id: Date.now(),
       text,
       created_at: Date.now().toString(),
       type: 'to',
@@ -42,7 +44,7 @@ export const useMessageSubmit = (user_id: number, avatar: string | null, usernam
       )
     }
 
-    messagesAPI.sendMessageToUser(user_id, text)
+    messagesAPI.sendMessageToUser(room_id, text)
 
     setText('')
   }
