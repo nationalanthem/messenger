@@ -1,27 +1,21 @@
 import SideMenuFilter from '../side-menu-filter/side-menu-filter'
 import PersonItem from '../person-item/person-item'
-import './side-menu.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  selectIsMessagesLoading,
-  selectLastMessages,
-} from '../../redux/re-ducks/lastMessages/selectors'
 import { setDialogUserId } from '../../redux/re-ducks/dialog/actions'
-import { selectUserId } from '../../redux/re-ducks/dialog/selectors'
 import MyProfile from '../my-profile/my-profile'
-import { selectMyUsername } from '../../redux/re-ducks/user/selectors'
-import { selectFilter } from '../../redux/re-ducks/filter/selectors'
 import SearchBar from '../search-bar/search-bar'
 import { CircularProgress } from '@material-ui/core'
+import useSideMenu from './useSideMenu'
+import './side-menu.scss'
 
 const SideMenu = () => {
-  const dispatch = useDispatch()
-
-  const messages = useSelector(selectLastMessages)
-  const current_user_id = useSelector(selectUserId)
-  const myUsername = useSelector(selectMyUsername)
-  const filter = useSelector(selectFilter)
-  const isMessagesLoading = useSelector(selectIsMessagesLoading)
+  const {
+    filter,
+    current_user_id,
+    messages,
+    dispatch,
+    isMessagesLoading,
+    myUsername,
+  } = useSideMenu()
 
   return (
     <div className="side-menu">

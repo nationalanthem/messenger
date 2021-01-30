@@ -1,18 +1,18 @@
 require('dotenv').config()
 
 const express = require('express')
-
-const authRouter = require('./routes/auth.route')
-const userRouter = require('./routes/user.route')
-const messagesRouter = require('./routes/messages.route')
+const cors = require('cors')
 
 const app = express()
+const server = require('http').Server(app)
+const io = require('socket.io')(server, { cors: { origin: '*' } })
 const PORT = process.env.PORT || 3001
 
 app.use(express.json())
+app.use(cors())
 
-app.use('/api', [authRouter, userRouter, messagesRouter])
+require('./server')(app, io)
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`[Server]: Listening on port ${PORT}...`)
 })

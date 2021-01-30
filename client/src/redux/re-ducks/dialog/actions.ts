@@ -4,11 +4,13 @@ import {
   FetchDialogDataStart,
   FetchDialogDataSuccess,
   SetDialogUserId,
+  UpdateLastSeen,
 } from '../types'
 
 export enum DialogActionTypes {
   SET_DIALOG_USER_ID = 'dialog/SET_DIALOG_USER_ID',
   ADD_DIALOG_MESSAGE = 'dialog/ADD_DIALOG_MESSAGE',
+  UPDATE_LAST_SEEN = 'dialog/UPDATE_LAST_SEEN',
   FETCH_DIALOG_START = 'dialog/FETCH_DIALOG_START',
   FETCH_DIALOG_SUCCESS = 'dialog/FETCH_DIALOG_SUCCESS',
 }
@@ -24,6 +26,12 @@ export const addDialogMessage = (payload: DialogMessage): AddDialogMessage => {
   return {
     type: DialogActionTypes.ADD_DIALOG_MESSAGE,
     payload,
+  }
+}
+
+export const updateLastSeen = (): UpdateLastSeen => {
+  return {
+    type: DialogActionTypes.UPDATE_LAST_SEEN,
   }
 }
 

@@ -101,6 +101,10 @@ export interface AddDialogMessage {
   payload: DialogMessage
 }
 
+export interface UpdateLastSeen {
+  type: typeof DialogActionTypes.UPDATE_LAST_SEEN
+}
+
 export interface FetchDialogDataStart {
   type: typeof DialogActionTypes.FETCH_DIALOG_START
 }
@@ -112,6 +116,7 @@ export interface FetchDialogDataSuccess {
 export type DialogActions =
   | SetDialogUserId
   | AddDialogMessage
+  | UpdateLastSeen
   | FetchDialogDataStart
   | FetchDialogDataSuccess
 

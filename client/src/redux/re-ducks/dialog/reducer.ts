@@ -16,6 +16,11 @@ const dialogReducer = produce((draft: Draft<DialogState>, action: DialogActions)
     case DialogActionTypes.ADD_DIALOG_MESSAGE:
       draft.data?.messages.push(action.payload)
       break
+    case DialogActionTypes.UPDATE_LAST_SEEN:
+      if (draft.data) {
+        draft.data.last_seen = Date.now().toString()
+      }
+      break
     case DialogActionTypes.FETCH_DIALOG_START:
       draft.status = LoadingState.LOADING
       draft.data = null
