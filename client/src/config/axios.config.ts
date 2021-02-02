@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:3001'
-
 export const updateAxiosHeaders = () => {
   const token = localStorage.getItem('token')
 
